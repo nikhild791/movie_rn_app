@@ -1,9 +1,9 @@
-export const TMDB_CONFIG = {
-  BASE_URL: "https://api.themoviedb.org/3",
-  API_KEY: process.env.EXPO_PUBLIC_MOVIE_API_KEY,
+export const RAPID_CONFIG = {
+  BASE_URL: 'https://moviesdatabase.p.rapidapi.com/titles',
+  API_KEY: process.env.EXPO_PUBLIC_RAPID_API_KEY,
   headers: {
-    Accept: "application/json",
-    Authorization: `Bearer ${process.env.EXPO_PUBLIC_MOVIE_API_KEY}`,
+    'x-rapidapi-host': process.env.EXPO_PUBLIC_RAPID_HOST,
+    'x-rapidapi-key': `${process.env.EXPO_PUBLIC_RAPID_API_KEY}`,
   },
 };
 
@@ -11,21 +11,22 @@ export const fetchMovies = async ({
   query,
 }: {
   query: string;
-}): Promise<Movie[]> => {
+}): Promise<Movie[]> => { 
   const endpoint = query
-    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
-    : `${TMDB_CONFIG.BASE_URL}/discover/movie?sort_by=popularity.desc`;
-
+    ? `${RAPID_CONFIG.BASE_URL}/search/keyword/${encodeURIComponent(query.toLocaleLowerCase())}`
+    : `${RAPID_CONFIG.BASE_URL}`;
+  console.log("This is query",endpoint)
     const response = await fetch(endpoint, {
-    method: "GET",
-    headers: TMDB_CONFIG.headers,
+    method: 'GET',
+    headers: RAPID_CONFIG.headers,
   });
-  console.log("this is data")
   if (!response.ok) {
+    console.log(response.statusText)
     throw new Error(`Failed to fetch movies: ${response.statusText}`);
   }
 
   const data = await response.json();
+  console.log("This is search result",data.results)
   return data.results;
 };
 
@@ -34,13 +35,8 @@ export const fetchMovieDetails = async (
 ): Promise<MovieDetails> => {
   try {
     const response = await fetch(
-      `${TMDB_CONFIG.BASE_URL}/movie/${movieId}?api_key=${TMDB_CONFIG.API_KEY}`,
-      {
-        method: "GET",
-        headers: TMDB_CONFIG.headers,
-      }
-    );
-
+      `https://imdb.iamidiotareyoutoo.com/search?tt=${movieId}`);
+  
     if (!response.ok) {
       throw new Error(`Failed to fetch movie details: ${response.statusText}`);
     }
