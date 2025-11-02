@@ -10,8 +10,7 @@ type SearchBarProp ={
 
 const  SearchBar = ({value,placeholder,onPress,onChangeText}:SearchBarProp)=>{
 return(
-    <View className="flex flex-row items-center bg-dark-200 rounded-full  px-5 py-4">
-        <Text>wwe</Text>
+    <View className="flex flex-row items-center pr-4 bg-dark-200 rounded-full  px-5 py-4">
             <Image source={icons.search} className="size-5" resizeMode="contain" tintColor="#ab8bff" />
             <TextInput
             onPress={onPress}

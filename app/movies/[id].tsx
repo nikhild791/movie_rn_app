@@ -33,8 +33,7 @@ const Details = () => {
   const { data: movie, loading } = useFetch(() =>
     fetchMovieDetails(id as string)
 );
-console.log(movie?.top.releaseYear.year)
-  console.log(movie?.main.productionBudget)  
+
   if (loading)
     return (
       <SafeAreaView className="bg-primary flex-1">
